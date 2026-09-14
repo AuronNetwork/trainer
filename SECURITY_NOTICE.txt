@@ -1,0 +1,45 @@
+AuronNetwork Multi-Game Trainer 3.28 - Security notice / Sicherheitshinweis
+=========================================================================
+
+ENGLISH
+-------
+Microsoft Defender detected "Behavior:Win32/DefenseEvasion.A!ml" during a live
+test of version 3.23 and quarantined that executable. Some trainer features
+write game memory and execute code inside the running game process. This
+behavior is a suspected cause of the detection, not a confirmed explanation.
+
+The detection has not been cleared by Microsoft or independently confirmed as
+a false positive. This release has no Windows Authenticode signature.
+The separate RSA-signed update manifest authenticates update files against
+the embedded publisher key; it is not an antivirus clearance.
+Building or running successfully
+with antivirus protection disabled or an excluded folder does not establish
+safety. Do not treat this notice as an instruction to disable protection or
+add exclusions. If your security software blocks the trainer, stop and seek
+review of the detection before proceeding.
+
+Use only in supported local single-player games. Back up your saves first.
+See WHISKERWOOD_UPDATE_3.28.md for current tests and limitations;
+WHISKERWOOD_UPDATE_3.23.md retains the historical live-test report.
+
+DEUTSCH
+-------
+Microsoft Defender hat bei einem Live-Test von Version 3.23 die Meldung
+"Behavior:Win32/DefenseEvasion.A!ml" ausgegeben und diese EXE in Quarantäne
+verschoben. Einige Trainer-Funktionen schreiben in den Spielspeicher und
+führen Code innerhalb des laufenden Spiels aus. Dieses Verhalten ist eine
+vermutete, aber nicht abschließend bestätigte Ursache der Erkennung.
+
+Die Erkennung wurde weder von Microsoft geklärt noch unabhängig als Fehlalarm
+bestätigt. Diese Version besitzt keine Windows-Authenticode-Signatur.
+Das separate RSA-signierte Update-Manifest prüft Update-Dateien gegen den
+eingebetteten Herausgeberschlüssel; es ist keine Virenschutz-Freigabe.
+Ein erfolgreicher Build
+oder Start bei deaktiviertem Virenschutz oder in einem ausgeschlossenen Ordner
+belegt keine Unbedenklichkeit. Dieser Hinweis ist keine Aufforderung, den Schutz
+zu deaktivieren oder Ausnahmen anzulegen. Wenn deine Sicherheitssoftware den
+Trainer blockiert, verwende ihn bis zur Prüfung der Meldung nicht weiter.
+
+Nur für unterstützte lokale Einzelspieler-Spiele. Sichere vorher deine Saves.
+Aktuelle Tests und Grenzen stehen in WHISKERWOOD_UPDATE_3.28.md;
+WHISKERWOOD_UPDATE_3.23.md enthält den historischen Live-Testbericht.
