@@ -3,7 +3,8 @@
 Official release downloads for the AuronNetwork Multi-Game Trainer.
 
 - Website: [auronnetwork.net](https://auronnetwork.net/)
-- Downloads: [GitHub Releases](https://github.com/AuronNetwork/trainer/releases)
+- Current download: [Trainer 3.28.2](https://github.com/AuronNetwork/trainer/releases/tag/v3.28.2)
+- Original archive: [Trainer 3.28](https://github.com/AuronNetwork/trainer/releases/tag/v3.28)
 
 This is a **release-distribution repository**. Trainer source code, private keys,
 account data and staging configurations are not published here.
@@ -11,13 +12,18 @@ account data and staging configurations are not published here.
 ## Repository migration
 
 The previous `Auron-Network/trainer` repository is no longer available.
-The original version 3.28 is being restored here as an unchanged historical
+The original version 3.28 has been restored here as an unchanged historical
 download. Its embedded updater still points to the previous repository;
 rehosting this file alone does not repair updates in existing installations.
 
-A client built for this new update channel must be downloaded manually once.
-After that migration, future signed updates can be discovered through this
-repository. Do not treat the archived 3.28 build as an update-channel fix.
+Download **3.28.2 manually once** to migrate to the new update channel.
+After that, future signed updates can be discovered through Settings in the
+trainer. Download and installation still require confirmation. No GitHub account
+is needed. Do not treat the archived 3.28 build as an update-channel fix.
+
+3.28.2 is based on the original public 3.28 and only changes the version, update
+repository and matching Settings labels. Games and cheats are unchanged.
+No account, licensing or staging integration is included.
 
 ## Before running or updating
 
