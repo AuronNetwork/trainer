@@ -1,0 +1,97 @@
+name: Nexus upload (manual approval)
+
+# No release/push/schedule trigger: every publication needs explicit approval.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version without v, e.g. 3.28'
+        required: true
+        type: string
+      zip_sha256:
+        description: 'SHA-256 of the explicitly approved portable Nexus ZIP'
+        required: true
+        type: string
+      dry_run:
+        description: 'Validate only; do not access the Nexus key or upload'
+        default: true
+        type: boolean
+      confirmation:
+        description: 'For upload, type exactly: PUBLISH <version> TO NEXUS'
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nexus-upload
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    if: github.repository == 'AuronNetwork/trainer' && github.ref == 'refs/heads/main'
+    runs-on: windows-latest
+    timeout-minutes: 20
+    # Validation cannot access the production environment secret.
+    environment: ${{ inputs.dry_run && 'nexus-validation' || 'nexus-production' }}
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Validate approval and download the exact release ZIP
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          ZIP_SHA256: ${{ inputs.zip_sha256 }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          $ErrorActionPreference='Stop'
+          $version=$env:RELEASE_VERSION
+          if ($version -notmatch '^\d+\.\d+(?:\.\d+)?$') {throw 'Invalid version'}
+          if ($env:ZIP_SHA256 -notmatch '^[a-fA-F0-9]{64}$') {throw 'Invalid SHA-256'}
+          if ($env:DRY_RUN -ne 'true' -and $env:CONFIRMATION -cne "PUBLISH $version TO NEXUS") {throw 'Explicit publication confirmation required'}
+          $json=gh release view "v$version" --repo AuronNetwork/trainer --json tagName,isDraft,isPrerelease,assets
+          if ($LASTEXITCODE -ne 0) {throw 'Cannot read release'}
+          $release=$json | ConvertFrom-Json
+          if ($release.isDraft -or $release.isPrerelease -or $release.tagName -cne "v$version") {throw 'Expected published stable release'}
+          $name="AuronNetworkMultiGameTrainer_v$version.zip"
+          if (@($release.assets | Where-Object name -CEQ $name).Count -ne 1) {throw 'Portable Nexus ZIP missing on GitHub. Upload the approved existing ZIP first; do not rebuild from the standalone EXE.'}
+          New-Item -ItemType Directory -Path package | Out-Null
+          gh release download "v$version" --repo AuronNetwork/trainer --pattern $name --dir package
+          if ($LASTEXITCODE -ne 0) {throw 'Download failed'}
+          & ./tools/Test-NexusUploadPackage.ps1 -Version $version -ZipPath "package/$name" -ExpectedSha256 $env:ZIP_SHA256
+      - name: Check publication credential exists
+        if: ${{ !inputs.dry_run }}
+        env:
+          NEXUS_API_KEY: ${{ secrets.NEXUSMODS_API_KEY }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:NEXUS_API_KEY)) {throw 'Set a new Nexus API key in the nexus-production environment secret NEXUSMODS_API_KEY.'}
+      - name: Upload new version to the existing Nexus file
+        id: nexus
+        if: ${{ !inputs.dry_run }}
+        uses: Nexus-Mods/upload-action@98532f7670c27cbecc78fae03fa3e278147827e2
+        with:
+          api_key: ${{ secrets.NEXUSMODS_API_KEY }}
+          file_id: '7850226'
+          filename: package/AuronNetworkMultiGameTrainer_v${{ inputs.version }}.zip
+          version: ${{ inputs.version }}
+          display_name: AuronNetwork Multi-Game Trainer
+          description: 'Portable trainer. Extract the complete ZIP and read README_EN.txt, CHANGELOG_EN.txt and SECURITY_NOTICE.txt. Local single-player only. No Authenticode signature; signed app updates are not antivirus clearance.'
+          category: main
+          archive_existing_version: 'false'
+          allow_mod_manager_download: 'false'
+          primary_mod_manager_download: 'false'
+          update_mod_version: 'true'
+      - name: Report result
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+          NEXUS_VERSION_ID: ${{ steps.nexus.outputs.version_id }}
+        run: |
+          if ($env:DRY_RUN -eq 'true') {'NEXUS_DRY_RUN_OK: package verified; nothing uploaded.'}
+          elseif ([string]::IsNullOrWhiteSpace($env:NEXUS_VERSION_ID)) {throw 'No version ID returned. Inspect Nexus before any retry; do not blindly rerun.'}
+          else {"NEXUS_UPLOAD_RETURNED_VERSION_ID: $env:NEXUS_VERSION_ID. Check the file page and scan/processing status before announcing availability."}

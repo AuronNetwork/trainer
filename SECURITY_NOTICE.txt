@@ -1,4 +1,4 @@
-AuronNetwork Multi-Game Trainer 3.28 - Security notice / Sicherheitshinweis
+AuronNetwork Multi-Game Trainer 3.28.3 - Security notice / Sicherheitshinweis
 =========================================================================
 
 ENGLISH
@@ -19,7 +19,7 @@ add exclusions. If your security software blocks the trainer, stop and seek
 review of the detection before proceeding.
 
 Use only in supported local single-player games. Back up your saves first.
-See WHISKERWOOD_UPDATE_3.28.md for current tests and limitations;
+See WHISKERWOOD_UPDATE_3.28.3.md for current tests and limitations;
 WHISKERWOOD_UPDATE_3.23.md retains the historical live-test report.
 
 DEUTSCH
@@ -41,5 +41,5 @@ zu deaktivieren oder Ausnahmen anzulegen. Wenn deine Sicherheitssoftware den
 Trainer blockiert, verwende ihn bis zur Prüfung der Meldung nicht weiter.
 
 Nur für unterstützte lokale Einzelspieler-Spiele. Sichere vorher deine Saves.
-Aktuelle Tests und Grenzen stehen in WHISKERWOOD_UPDATE_3.28.md;
+Aktuelle Tests und Grenzen stehen in WHISKERWOOD_UPDATE_3.28.3.md;
 WHISKERWOOD_UPDATE_3.23.md enthält den historischen Live-Testbericht.

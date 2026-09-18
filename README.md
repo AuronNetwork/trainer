@@ -3,11 +3,20 @@
 Official release downloads for the AuronNetwork Multi-Game Trainer.
 
 - Website: [auronnetwork.net](https://auronnetwork.net/)
-- Current download: [Trainer 3.28.2](https://github.com/AuronNetwork/trainer/releases/tag/v3.28.2)
+- Current download: [Trainer 3.28.3](https://github.com/AuronNetwork/trainer/releases/tag/v3.28.3)
 - Original archive: [Trainer 3.28](https://github.com/AuronNetwork/trainer/releases/tag/v3.28)
 
 This is a **release-distribution repository**. Trainer source code, private keys,
 account data and staging configurations are not published here.
+
+## Version 3.28.3 — Whiskerwood Patch #28
+
+Adds compatibility with Whiskerwood v0.7.207, verified Steam build 25363400.
+Build-specific layouts have been updated while unknown-build checks and existing
+restoration safeguards remain intact. No new cheats or UI redesign; MMORPG
+Tycoon 2 and ReStory are unchanged. See the release notes for checks and limits.
+
+Version 3.28.2 users can discover this signed update through Settings.
 
 ## Repository migration
 
@@ -16,7 +25,7 @@ The original version 3.28 has been restored here as an unchanged historical
 download. Its embedded updater still points to the previous repository;
 rehosting this file alone does not repair updates in existing installations.
 
-Download **3.28.2 manually once** to migrate to the new update channel.
+Download **3.28.3 or newer manually once** to migrate to the new update channel.
 After that, future signed updates can be discovered through Settings in the
 trainer. Download and installation still require confirmation. No GitHub account
 is needed. Do not treat the archived 3.28 build as an update-channel fix.
@@ -24,6 +33,16 @@ is needed. Do not treat the archived 3.28 build as an update-channel fix.
 3.28.2 is based on the original public 3.28 and only changes the version, update
 repository and matching Settings labels. Games and cheats are unchanged.
 No account, licensing or staging integration is included.
+
+## Nexus publication
+
+The restored **Nexus upload (manual approval)** workflow validates the exact
+portable ZIP from a published GitHub release. It has no automatic push/release
+trigger. A production upload needs an explicitly approved version and ZIP hash,
+the protected `nexus-production` environment and its `NEXUSMODS_API_KEY` secret.
+Dry runs use a separate environment and do not access this secret. Workflow
+success does not imply completion of Nexus scanning or download availability.
+No trainer source code is needed for this distribution workflow.
 
 ## Before running or updating
 
